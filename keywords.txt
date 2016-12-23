@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map Servo
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_VEML7700	KEYWORD1	DFRobot_VEML7700
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+setGain	KEYWORD2
+getGain	KEYWORD2
+setIntegrationTime	KEYWORD2
+getIntegrationTime		KEYWORD2
+setPersistence	KEYWORD2
+setPowerSavingMode  KEYWORD2
+setPowerSaving   KEYWORD2
+setInterrupts  KEYWORD2
+setPower  KEYWORD2
+setALSHighThreshold   KEYWORD2
+setALSLowThreshold  KEYWORD2
+getALS  KEYWORD2
+getWhite	KEYWORD2
+getHighThresholdEvent	KEYWORD2
+getLowThresholdEvent	KEYWORD2
+
+begin		KEYWORD2
+getALSLux	KEYWORD2
+getWhiteLux  KEYWORD2
+getAutoALSLux   KEYWORD2
+getAutoWhiteLux  KEYWORD2
+sampleDelay  KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
