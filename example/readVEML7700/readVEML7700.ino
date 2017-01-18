@@ -27,7 +27,11 @@ void setup()
 void loop()
 {
   float lux;
+  
   als.getALSLux(lux);
-  Serial.println(lux);
+  Serial.print("Lux:");
+  Serial.print(lux);
+  Serial.println(" lx");
+  
   delay(200);
 }
