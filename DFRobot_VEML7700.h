@@ -58,10 +58,10 @@ public:
   uint8_t setPowerSaving(uint8_t enabled);
   uint8_t setInterrupts(uint8_t enabled);
   uint8_t setPower(uint8_t on);
-  uint8_t setALSHighThreshold(uint16_t thresh);
-  uint8_t setALSLowThreshold(uint16_t thresh);
-  uint8_t getALS(uint16_t& als);
-  uint8_t getWhite(uint16_t& white);
+  uint8_t setALSHighThreshold(uint32_t thresh);
+  uint8_t setALSLowThreshold(uint32_t thresh);
+  uint8_t getALS(uint32_t& als);
+  uint8_t getWhite(uint32_t& white);
   uint8_t getHighThresholdEvent(uint8_t& event);
   uint8_t getLowThresholdEvent(uint8_t& event);
 
@@ -76,15 +76,15 @@ public:
   uint8_t getAutoALSLux(float& lux,
                         DFRobot_VEML7700::als_gain_t& auto_gain,
                         DFRobot_VEML7700::als_itime_t& auto_itime,
-                        uint16_t& raw_counts);
+                        uint32_t& raw_counts);
   uint8_t getAutoWhiteLux(float& lux,
                           DFRobot_VEML7700::als_gain_t& auto_gain,
                           DFRobot_VEML7700::als_itime_t& auto_itime,
-                          uint16_t& raw_counts);
+                          uint32_t& raw_counts);
   uint8_t sampleDelay();
   
 private:
-  typedef uint8_t (DFRobot_VEML7700::*getCountsFunction)(uint16_t& counts);
+  typedef uint8_t (DFRobot_VEML7700::*getCountsFunction)(uint32_t& counts);
   enum { I2C_ADDRESS = 0x10 };
   enum { COMMAND_ALS_SM = 0x00, ALS_SM_MASK = 0x1800, ALS_SM_SHIFT = 11 };
   enum { COMMAND_ALS_IT = 0x00, ALS_IT_MASK = 0x03c0, ALS_IT_SHIFT = 6 };
@@ -101,15 +101,15 @@ private:
   enum { COMMAND_ALS_IF_L = 0x06, ALS_IF_L_MASK = 0x8000, ALS_IF_L_SHIFT = 15 };
   enum { COMMAND_ALS_IF_H = 0x06, ALS_IF_H_MASK = 0x4000, ALS_IF_H_SHIFT = 14 };
 
-  uint16_t register_cache[4];
+  uint32_t register_cache[4];
 
-  uint8_t sendData(uint8_t command, uint16_t data = 0);
-  uint8_t receiveData(uint8_t command, uint16_t& data);
-  void scaleLux(uint16_t raw_counts, float& lux);
+  uint8_t sendData(uint8_t command, uint32_t data = 0);
+  uint8_t receiveData(uint8_t command, uint32_t& data);
+  void scaleLux(uint32_t raw_counts, float& lux);
   uint8_t getAutoXLux(float& lux,
                       DFRobot_VEML7700::getCountsFunction counts_func,
                       DFRobot_VEML7700::als_gain_t& auto_gain,
                       DFRobot_VEML7700::als_itime_t& auto_itime,
-                      uint16_t& raw_counts);
+                      uint32_t& raw_counts);
 
 };
