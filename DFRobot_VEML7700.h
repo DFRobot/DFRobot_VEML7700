@@ -69,6 +69,7 @@ public:
    *  @brief higher-level API
    */
   void begin();
+  void begin(uint8_t als_gain);
   uint8_t getALSLux(float& lux);
   uint8_t getWhiteLux(float& lux);
   uint8_t getAutoALSLux(float& lux);

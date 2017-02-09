@@ -25,7 +25,31 @@ begin()
   Wire.begin();
 
   // write initial state to DFRobot_VEML7700
-  register_cache[0] = ( (uint32_t(ALS_GAIN_d8) << ALS_SM_SHIFT) |
+  register_cache[0] = ( (uint32_t(ALS_GAIN_x2) << ALS_SM_SHIFT) |
+                        (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
+                        (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
+                        (uint32_t(0) << ALS_INT_EN_SHIFT) |
+                        (uint32_t(0) << ALS_SD_SHIFT) );
+  register_cache[1] = 0x0000;
+  register_cache[2] = 0xffff;
+  register_cache[3] = ( (uint32_t(ALS_POWER_MODE_3) << PSM_SHIFT) |
+                        (uint32_t(0) << PSM_EN_SHIFT) );
+  for (uint8_t i=0; i<4; i++){
+    sendData(i, register_cache[i]);
+  }
+
+  // wait at least 2.5ms as per datasheet
+  delay(3);
+}
+
+void 
+DFRobot_VEML7700::
+begin(uint8_t als_gain)
+{
+  Wire.begin();
+
+  // write initial state to DFRobot_VEML7700
+  register_cache[0] = ( (uint32_t(als_gain) << ALS_SM_SHIFT) |
                         (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
                         (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
                         (uint32_t(0) << ALS_INT_EN_SHIFT) |
@@ -231,7 +255,8 @@ scaleLux(uint32_t raw_counts, float& lux)
   getGain(gain);
   getIntegrationTime(itime);
 
-  float factor1, factor2;
+  float factor1, factor2, result;
+  static uint8_t x1=0, x2=1, d8=0;
 
   switch(gain & 0x3){
   case ALS_GAIN_x1:
@@ -275,8 +300,24 @@ scaleLux(uint32_t raw_counts, float& lux)
     break;
   }
 
-  lux = raw_counts * factor1 * factor2;
-
+  result = raw_counts * factor1 * factor2;
+  if((result > 1880.00f) && (result < 3771.00f)){
+	  if(x1 == 1){
+		begin(ALS_GAIN_x1);
+		x1 = 0; x2 = 1; d8 = 1;
+	  }
+  }else if(result>3770.00f){
+	  if(d8 == 1){
+		begin(ALS_GAIN_d8);
+		x1 = 1; x2 = 1; d8 = 0;
+	  }
+  }else{
+	  if(x2 == 1){
+		begin();  
+		x1 = 1; x2 = 0; d8 = 1;
+	  }
+  }
+  lux = result;
   // apply correction from App. Note for all readings
   //   using Horner's method
   lux = lux * (1.0023f + lux * (8.1488e-5f + lux * (-9.3924e-9f + 
