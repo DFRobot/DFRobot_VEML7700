@@ -1,16 +1,17 @@
 #######################################
-# Syntax Coloring Map Servo
+# Syntax Coloring Map For DFRobot_VEML7700
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-DFRobot_VEML7700	KEYWORD1	DFRobot_VEML7700
+DFRobot_VEML7700	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+
 setGain	KEYWORD2
 getGain	KEYWORD2
 setIntegrationTime	KEYWORD2
@@ -37,3 +38,24 @@ sampleDelay  KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+ALS_GAIN_x1	LITERAL1
+ALS_GAIN_x2	LITERAL1
+ALS_GAIN_d8	LITERAL1
+ALS_GAIN_d4	LITERAL1
+ALS_INTEGRATION_25ms	LITERAL1
+ALS_INTEGRATION_50ms	LITERAL1
+ALS_INTEGRATION_100ms	LITERAL1
+ALS_INTEGRATION_200ms	LITERAL1
+ALS_INTEGRATION_400ms	LITERAL1
+ALS_INTEGRATION_800ms	LITERAL1
+ALS_PERSISTENCE_1	LITERAL1
+ALS_PERSISTENCE_2	LITERAL1
+ALS_PERSISTENCE_4	LITERAL1
+ALS_PERSISTENCE_8	LITERAL1
+ALS_POWER_MODE_1	LITERAL1
+ALS_POWER_MODE_2	LITERAL1
+ALS_POWER_MODE_3	LITERAL1
+ALS_POWER_MODE_4	LITERAL1
+STATUS_OK	LITERAL1
+STATUS_ERROR	LITERAL1
