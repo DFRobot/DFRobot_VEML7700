@@ -80,7 +80,7 @@ VEML7700是一个高精度环境光数字16位分辨率传感器在微型透明6
 
   /**
    * @fn getIntegrationTime
-   * @brief 设置ALS积分时间
+   * @brief 获取ALS积分时间
    * @param itime 当前ALS积分时间:
    * @n       ALS_INTEGRATION_25ms, ALS_INTEGRATION_50ms, ALS_INTEGRATION_100ms, 
    * @n       ALS_INTEGRATION_200ms, ALS_INTEGRATION_400ms, ALS_INTEGRATION_800ms
@@ -193,7 +193,7 @@ VEML7700是一个高精度环境光数字16位分辨率传感器在微型透明6
    * @brief 获取阈值上限触发中断事件
    * @param event :
    * @n       0 未检测到阈值上限中断事件
-   * @n       0 检测到阈值上限中断事件
+   * @n       1 检测到阈值上限中断事件
    * @return 返回操作结果
    * @retval STATUS_OK 操作成功, 没有异常
    * @retval STATUS_ERROR 操作失败
@@ -205,7 +205,7 @@ VEML7700是一个高精度环境光数字16位分辨率传感器在微型透明6
    * @brief 获取阈值下限触发中断事件
    * @param event :
    * @n       0 未检测到阈值下限中断事件
-   * @n       0 检测到阈值下限中断事件
+   * @n       1 检测到阈值下限中断事件
    * @return 返回操作结果
    * @retval STATUS_OK 操作成功, 没有异常
    * @retval STATUS_ERROR 操作失败

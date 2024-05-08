@@ -21,16 +21,16 @@ void DFRobot_VEML7700::begin()
   Wire.begin();
 
   // write initial state to DFRobot_VEML7700
-  register_cache[0] = ( (uint32_t(ALS_GAIN_x2) << ALS_SM_SHIFT) |
-                        (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
-                        (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
-                        (uint32_t(0) << ALS_INT_EN_SHIFT) |
-                        (uint32_t(0) << ALS_SD_SHIFT) );
+  register_cache[0] = ((uint32_t(ALS_GAIN_x2) << ALS_SM_SHIFT) |
+    (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
+    (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
+    (uint32_t(0) << ALS_INT_EN_SHIFT) |
+    (uint32_t(0) << ALS_SD_SHIFT));
   register_cache[1] = 0x0000;
   register_cache[2] = 0xffff;
-  register_cache[3] = ( (uint32_t(ALS_POWER_MODE_3) << PSM_SHIFT) |
-                        (uint32_t(0) << PSM_EN_SHIFT) );
-  for (uint8_t i=0; i<4; i++){
+  register_cache[3] = ((uint32_t(ALS_POWER_MODE_3) << PSM_SHIFT) |
+    (uint32_t(0) << PSM_EN_SHIFT));
+  for (uint8_t i = 0; i < 4; i++) {
     sendData(i, register_cache[i]);
   }
 
@@ -43,16 +43,16 @@ void DFRobot_VEML7700::begin(uint8_t als_gain)
   Wire.begin();
 
   // write initial state to DFRobot_VEML7700
-  register_cache[0] = ( (uint32_t(als_gain) << ALS_SM_SHIFT) |
-                        (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
-                        (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
-                        (uint32_t(0) << ALS_INT_EN_SHIFT) |
-                        (uint32_t(0) << ALS_SD_SHIFT) );
+  register_cache[0] = ((uint32_t(als_gain) << ALS_SM_SHIFT) |
+    (uint32_t(ALS_INTEGRATION_100ms) << ALS_IT_SHIFT) |
+    (uint32_t(ALS_PERSISTENCE_1) << ALS_PERS_SHIFT) |
+    (uint32_t(0) << ALS_INT_EN_SHIFT) |
+    (uint32_t(0) << ALS_SD_SHIFT));
   register_cache[1] = 0x0000;
   register_cache[2] = 0xffff;
-  register_cache[3] = ( (uint32_t(ALS_POWER_MODE_3) << PSM_SHIFT) |
-                        (uint32_t(0) << PSM_EN_SHIFT) );
-  for (uint8_t i=0; i<4; i++){
+  register_cache[3] = ((uint32_t(ALS_POWER_MODE_3) << PSM_SHIFT) |
+    (uint32_t(0) << PSM_EN_SHIFT));
+  for (uint8_t i = 0; i < 4; i++) {
     sendData(i, register_cache[i]);
   }
 
@@ -63,16 +63,16 @@ void DFRobot_VEML7700::begin(uint8_t als_gain)
 uint8_t DFRobot_VEML7700::sendData(uint8_t command, uint32_t data)
 {
   Wire.beginTransmission(I2C_ADDRESS);
-  if (Wire.write(command) != 1){
+  if (Wire.write(command) != 1) {
     return STATUS_ERROR;
   }
-  if (Wire.write(uint8_t(data & 0xff)) != 1){
+  if (Wire.write(uint8_t(data & 0xff)) != 1) {
     return STATUS_ERROR;
   }
-  if (Wire.write(uint8_t(data >> 8)) != 1){
+  if (Wire.write(uint8_t(data >> 8)) != 1) {
     return STATUS_ERROR;
   }
-  if (Wire.endTransmission()){
+  if (Wire.endTransmission()) {
     return STATUS_ERROR;
   }
   return STATUS_OK;
@@ -81,13 +81,13 @@ uint8_t DFRobot_VEML7700::sendData(uint8_t command, uint32_t data)
 uint8_t DFRobot_VEML7700::receiveData(uint8_t command, uint32_t& data)
 {
   Wire.beginTransmission(I2C_ADDRESS);
-  if (Wire.write(command) != 1){
+  if (Wire.write(command) != 1) {
     return STATUS_ERROR;
   }
-  if (Wire.endTransmission(false)){  // NB: don't send stop here
+  if (Wire.endTransmission(false)) {  // NB: don't send stop here
     return STATUS_ERROR;
   }
-  if (Wire.requestFrom(uint8_t(I2C_ADDRESS), uint8_t(2)) != 2){
+  if (Wire.requestFrom(uint8_t(I2C_ADDRESS), uint8_t(2)) != 2) {
     return STATUS_ERROR;
   }
   data = Wire.read();
@@ -97,8 +97,8 @@ uint8_t DFRobot_VEML7700::receiveData(uint8_t command, uint32_t& data)
 
 uint8_t DFRobot_VEML7700::setGain(eAlsGain_t gain)
 {
-  uint32_t reg = ( (register_cache[COMMAND_ALS_SM] & ~ALS_SM_MASK) | 
-                   ((uint32_t(gain) << ALS_SM_SHIFT) & ALS_SM_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_ALS_SM] & ~ALS_SM_MASK) |
+    ((uint32_t(gain) << ALS_SM_SHIFT) & ALS_SM_MASK));
   register_cache[COMMAND_ALS_SM] = reg;
   return sendData(COMMAND_ALS_SM, reg);
 }
@@ -106,14 +106,14 @@ uint8_t DFRobot_VEML7700::setGain(eAlsGain_t gain)
 uint8_t DFRobot_VEML7700::getGain(eAlsGain_t& gain)
 {
   gain = eAlsGain_t(
-    (register_cache[COMMAND_ALS_SM] & ALS_SM_MASK) >> ALS_SM_SHIFT );
+    (register_cache[COMMAND_ALS_SM] & ALS_SM_MASK) >> ALS_SM_SHIFT);
   return STATUS_OK;
 }
 
 uint8_t DFRobot_VEML7700::setIntegrationTime(eAlsItime_t itime)
 {
-  uint32_t reg = ( (register_cache[COMMAND_ALS_IT] & ~ALS_IT_MASK) | 
-                   ((uint32_t(itime) << ALS_IT_SHIFT) & ALS_IT_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_ALS_IT] & ~ALS_IT_MASK) |
+    ((uint32_t(itime) << ALS_IT_SHIFT) & ALS_IT_MASK));
   register_cache[COMMAND_ALS_IT] = reg;
   return sendData(COMMAND_ALS_IT, reg);
 }
@@ -121,47 +121,47 @@ uint8_t DFRobot_VEML7700::setIntegrationTime(eAlsItime_t itime)
 uint8_t DFRobot_VEML7700::getIntegrationTime(eAlsItime_t& itime)
 {
   itime = eAlsItime_t(
-    (register_cache[COMMAND_ALS_IT] & ALS_IT_MASK) >> ALS_IT_SHIFT );
+    (register_cache[COMMAND_ALS_IT] & ALS_IT_MASK) >> ALS_IT_SHIFT);
   return STATUS_OK;
 }
 
 uint8_t DFRobot_VEML7700::setPersistence(eAlsPersist_t persist)
 {
-  uint32_t reg = ( (register_cache[COMMAND_ALS_PERS] & ~ALS_PERS_MASK) | 
-                   ((uint32_t(persist) << ALS_PERS_SHIFT) & ALS_PERS_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_ALS_PERS] & ~ALS_PERS_MASK) |
+    ((uint32_t(persist) << ALS_PERS_SHIFT) & ALS_PERS_MASK));
   register_cache[COMMAND_ALS_PERS] = reg;
   return sendData(COMMAND_ALS_PERS, reg);
 }
 
 uint8_t DFRobot_VEML7700::setPowerSavingMode(eAlsPowerMode_t powerMode)
 {
-  uint32_t reg = ( (register_cache[COMMAND_PSM] & ~PSM_MASK) | 
-                   ((uint32_t(powerMode) << PSM_SHIFT) & PSM_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_PSM] & ~PSM_MASK) |
+    ((uint32_t(powerMode) << PSM_SHIFT) & PSM_MASK));
   register_cache[COMMAND_PSM] = reg;
   return sendData(COMMAND_PSM, reg);
 }
 
 uint8_t DFRobot_VEML7700::setPowerSaving(uint8_t enabled)
 {
-  uint32_t reg = ( (register_cache[COMMAND_PSM_EN] & ~PSM_EN_MASK) | 
-                   ((uint32_t(enabled) << PSM_EN_SHIFT) & PSM_EN_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_PSM_EN] & ~PSM_EN_MASK) |
+    ((uint32_t(enabled) << PSM_EN_SHIFT) & PSM_EN_MASK));
   register_cache[COMMAND_PSM_EN] = reg;
   return sendData(COMMAND_PSM_EN, reg);
 }
 
 uint8_t DFRobot_VEML7700::setInterrupts(uint8_t enabled)
 {
-  uint32_t reg = ( (register_cache[COMMAND_ALS_INT_EN] & ~ALS_INT_EN_MASK) | 
-                   ((uint32_t(enabled) << ALS_INT_EN_SHIFT) & 
-                    ALS_INT_EN_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_ALS_INT_EN] & ~ALS_INT_EN_MASK) |
+    ((uint32_t(enabled) << ALS_INT_EN_SHIFT) &
+      ALS_INT_EN_MASK));
   register_cache[COMMAND_ALS_INT_EN] = reg;
   return sendData(COMMAND_ALS_INT_EN, reg);
 }
 
 uint8_t DFRobot_VEML7700::setPower(uint8_t on)
 {
-  uint32_t reg = ( (register_cache[COMMAND_ALS_SD] & ~ALS_SD_MASK) | 
-                   ((uint32_t(~on) << ALS_SD_SHIFT) & ALS_SD_MASK) );
+  uint32_t reg = ((register_cache[COMMAND_ALS_SD] & ~ALS_SD_MASK) |
+    ((uint32_t(~on) << ALS_SD_SHIFT) & ALS_SD_MASK));
   register_cache[COMMAND_ALS_SD] = reg;
   uint8_t status = sendData(COMMAND_ALS_SD, reg);
   if (on) {
@@ -214,9 +214,9 @@ void DFRobot_VEML7700::scaleLux(uint32_t raw_counts, float& lux)
   getIntegrationTime(itime);
 
   float factor1, factor2, result;
-  static uint8_t x1=0, x2=1, d8=0;
+  static uint8_t x1 = 0, x2 = 1, d8 = 0;
 
-  switch(gain & 0x3){
+  switch (gain & 0x3) {
   case ALS_GAIN_x1:
     factor1 = 1.f;
     break;
@@ -234,7 +234,7 @@ void DFRobot_VEML7700::scaleLux(uint32_t raw_counts, float& lux)
     break;
   }
 
-  switch(itime){
+  switch (itime) {
   case ALS_INTEGRATION_25ms:
     factor2 = 0.2304f;
     break;
@@ -259,27 +259,27 @@ void DFRobot_VEML7700::scaleLux(uint32_t raw_counts, float& lux)
   }
 
   result = raw_counts * factor1 * factor2;
-  if((result > 1880.00f) && (result < 3771.00f)){
-	  if(x1 == 1){
-		begin(ALS_GAIN_x1);
-		x1 = 0; x2 = 1; d8 = 1;
-	  }
-  }else if(result>3770.00f){
-	  if(d8 == 1){
-		begin(ALS_GAIN_d8);
-		x1 = 1; x2 = 1; d8 = 0;
-	  }
-  }else{
-	  if(x2 == 1){
-		begin();  
-		x1 = 1; x2 = 0; d8 = 1;
-	  }
+  if ((result > 1880.00f) && (result < 3771.00f)) {
+    if (x1 == 1) {
+      begin(ALS_GAIN_x1);
+      x1 = 0; x2 = 1; d8 = 1;
+    }
+  } else if (result > 3770.00f) {
+    if (d8 == 1) {
+      begin(ALS_GAIN_d8);
+      x1 = 1; x2 = 1; d8 = 0;
+    }
+  } else {
+    if (x2 == 1) {
+      begin();
+      x1 = 1; x2 = 0; d8 = 1;
+    }
   }
   lux = result;
   // apply correction from App. Note for all readings
   //   using Horner's method
-  lux = lux * (1.0023f + lux * (8.1488e-5f + lux * (-9.3924e-9f + 
-                                                    lux * 6.0135e-13f)));
+  lux = lux * (1.0023f + lux * (8.1488e-5f + lux * (-9.3924e-9f +
+    lux * 6.0135e-13f)));
 }
 
 uint8_t DFRobot_VEML7700::getALSLux(float& lux)
@@ -299,16 +299,16 @@ uint8_t DFRobot_VEML7700::getWhiteLux(float& lux)
 }
 
 uint8_t DFRobot_VEML7700::getAutoXLux(float& lux,
-                                      DFRobot_VEML7700::getCountsFunction counts_func,
-                                      DFRobot_VEML7700::eAlsGain_t& auto_gain,
-                                      DFRobot_VEML7700::eAlsItime_t& auto_itime,
-                                      uint32_t& raw_counts)
+  DFRobot_VEML7700::getCountsFunction counts_func,
+  DFRobot_VEML7700::eAlsGain_t& auto_gain,
+  DFRobot_VEML7700::eAlsItime_t& auto_itime,
+  uint32_t& raw_counts)
 {
   eAlsGain_t gains[4] = { ALS_GAIN_d8,
                           ALS_GAIN_d4,
                           ALS_GAIN_x1,
                           ALS_GAIN_x2 };
-  eAlsItime_t itimes[6] = {ALS_INTEGRATION_25ms,
+  eAlsItime_t itimes[6] = { ALS_INTEGRATION_25ms,
                            ALS_INTEGRATION_50ms,
                            ALS_INTEGRATION_100ms,
                            ALS_INTEGRATION_200ms,
@@ -319,54 +319,54 @@ uint8_t DFRobot_VEML7700::getAutoXLux(float& lux,
 
   int8_t itime_idx;
   uint8_t gain_idx;
-  if (setPower(0)){
+  if (setPower(0)) {
     return STATUS_ERROR;
   }
-  for (itime_idx = 2; itime_idx < 6; itime_idx++){
-    if (setIntegrationTime(itimes[itime_idx])){
+  for (itime_idx = 2; itime_idx < 6; itime_idx++) {
+    if (setIntegrationTime(itimes[itime_idx])) {
       return STATUS_ERROR;
     }
-    for (gain_idx = 0; gain_idx < 4; gain_idx++){
-      if (setGain(gains[gain_idx])){
+    for (gain_idx = 0; gain_idx < 4; gain_idx++) {
+      if (setGain(gains[gain_idx])) {
         return STATUS_ERROR;
       }
-      if (setPower(1)){
+      if (setPower(1)) {
         return STATUS_ERROR;
       }
       sampleDelay();
-      if ((this->*counts_func)(raw_counts)){
+      if ((this->*counts_func)(raw_counts)) {
         return STATUS_ERROR;
       }
 
-      if (raw_counts > counts_threshold){
+      if (raw_counts > counts_threshold) {
         do {
-          if (raw_counts < 10000){
+          if (raw_counts < 10000) {
             scaleLux(raw_counts, lux);
             auto_gain = gains[gain_idx];
             auto_itime = itimes[itime_idx];
-            return STATUS_OK;  
+            return STATUS_OK;
           }
-          if(setPower(0)){
+          if (setPower(0)) {
             return STATUS_ERROR;
           }
           itime_idx--;
-          if (setIntegrationTime(itimes[itime_idx])){
+          if (setIntegrationTime(itimes[itime_idx])) {
             return STATUS_ERROR;
-          }          
-          if (setPower(1)){
+          }
+          if (setPower(1)) {
             return STATUS_ERROR;
           }
           sampleDelay();
-          if ((this->*counts_func)(raw_counts)){
+          if ((this->*counts_func)(raw_counts)) {
             return STATUS_ERROR;
           }
         } while (itime_idx > 0);
         scaleLux(raw_counts, lux);
         auto_gain = gains[gain_idx];
         auto_itime = itimes[itime_idx];
-        return STATUS_OK;  
+        return STATUS_OK;
       }
-      if(setPower(0)){
+      if (setPower(0)) {
         return STATUS_ERROR;
       }
     }
@@ -383,10 +383,10 @@ uint8_t DFRobot_VEML7700::getAutoALSLux(float& lux)
   DFRobot_VEML7700::eAlsItime_t auto_itime;
   uint32_t raw_counts;
   return getAutoXLux(lux,
-                     &DFRobot_VEML7700::getALS,
-                     auto_gain,
-                     auto_itime,
-                     raw_counts);
+    &DFRobot_VEML7700::getALS,
+    auto_gain,
+    auto_itime,
+    raw_counts);
 }
 
 uint8_t DFRobot_VEML7700::getAutoWhiteLux(float& lux)
@@ -395,35 +395,35 @@ uint8_t DFRobot_VEML7700::getAutoWhiteLux(float& lux)
   DFRobot_VEML7700::eAlsItime_t auto_itime;
   uint32_t raw_counts;
   return getAutoXLux(lux,
-                     &DFRobot_VEML7700::getWhite,
-                     auto_gain,
-                     auto_itime,
-                     raw_counts);
+    &DFRobot_VEML7700::getWhite,
+    auto_gain,
+    auto_itime,
+    raw_counts);
 }
 
 
 uint8_t DFRobot_VEML7700::getAutoALSLux(float& lux,
-                                        DFRobot_VEML7700::eAlsGain_t& auto_gain,
-                                        DFRobot_VEML7700::eAlsItime_t& auto_itime,
-                                        uint32_t& raw_counts)
+  DFRobot_VEML7700::eAlsGain_t& auto_gain,
+  DFRobot_VEML7700::eAlsItime_t& auto_itime,
+  uint32_t& raw_counts)
 {
   return getAutoXLux(lux,
-                     &DFRobot_VEML7700::getALS,
-                     auto_gain,
-                     auto_itime,
-                     raw_counts);
+    &DFRobot_VEML7700::getALS,
+    auto_gain,
+    auto_itime,
+    raw_counts);
 }
 
 uint8_t DFRobot_VEML7700::getAutoWhiteLux(float& lux,
-                                          DFRobot_VEML7700::eAlsGain_t& auto_gain,
-                                          DFRobot_VEML7700::eAlsItime_t& auto_itime,
-                                          uint32_t& raw_counts)
+  DFRobot_VEML7700::eAlsGain_t& auto_gain,
+  DFRobot_VEML7700::eAlsItime_t& auto_itime,
+  uint32_t& raw_counts)
 {
   return getAutoXLux(lux,
-                     &DFRobot_VEML7700::getWhite,
-                     auto_gain,
-                     auto_itime,
-                     raw_counts);
+    &DFRobot_VEML7700::getWhite,
+    auto_gain,
+    auto_itime,
+    raw_counts);
 }
 
 void DFRobot_VEML7700::sampleDelay()
@@ -432,9 +432,9 @@ void DFRobot_VEML7700::sampleDelay()
   getIntegrationTime(itime);
 
   // extend nominal delay to ensure new sample is generated
-  #define extended_delay(ms) delay(2*(ms))
+#define extended_delay(ms) delay(2*(ms))
 
-  switch(itime){
+  switch (itime) {
   case ALS_INTEGRATION_25ms:
     extended_delay(25);
     break;
